@@ -31,7 +31,20 @@ app.get('/', function (req, res) {
 app.get('/webhook', function (req, res) {
   res.send('You must POST your request')
 })
+function get_url(req_company, req_content){
+    url = url1 + req_company + url2;
 
+    request(url, function(error, response, html){
+      var $ = cheerio.load(html);
+      //기업 팝업 링크 찾아서 popup_link에 저장      
+      var popup_link_info = $('.company_tit > .tit ').first().find('a').attr('href');
+      var temp = popup_link_info.split("'");
+      popup_link += temp[1];
+    // console.log(popup_link);
+      return popup_link;
+      // res.send(JSON.stringify(notice_url_s))
+  });
+}
 app.post('/webhook', function (req, res) {
   // we expect to receive JSON data from api.ai here.
   // the payload is stored on req.body
@@ -58,22 +71,11 @@ app.post('/webhook', function (req, res) {
   req_content = req.body.result.parameters['Content']
 
   req_company = encodeURI(req_company); 
-  url = url1 + req_company + url2;
-
-  request(url, function(error, response, html){
-    var $ = cheerio.load(html);
-    //기업 팝업 링크 찾아서 popup_link에 저장      
-    var popup_link_info = $('.company_tit > .tit ').first().find('a').attr('href');
-    var temp = popup_link_info.split("'");
-    popup_link += temp[1];
-   // console.log(popup_link);
-    
-    // res.send(JSON.stringify(notice_url_s))
-});
-
+  
+var uuuuu = get_url(req_company,req_content);
 
 //  var webhookReply = 'Hello ' + userName + '! Welcome from the heroku.'
-  var webhookReply = popup_link;
+  var webhookReply = uuuuu;
 
   // the most basic response
   res.status(200).json({
