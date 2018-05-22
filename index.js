@@ -1,11 +1,29 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+
+var cheerio = require('cheerio');
+var request = require('request');
+
 const app = express()
 app.use(bodyParser.json())
 app.set('port', (process.env.PORT || 5000))
 
-const REQUIRE_AUTH = true
-const AUTH_TOKEN = 'an-example-token'
+
+var popup_link = "http://www.saramin.co.kr";
+var notice_url_s = "http://www.saramin.co.kr";
+var notice_url;
+
+var res_content;
+var req_company = '농심';
+var req_content = 'FAX';
+
+ // req_company = encodeURI(req_company);        //한글로 들어온 것 인코딩 시키기
+
+var url1 = 'http://www.saramin.co.kr/zf_user/search/company?searchword=';
+var url2 = '&searchType=auto&go=';
+var url;
+
+
 
 app.get('/', function (req, res) {
   res.send('Use the /webhook endpoint.')
@@ -36,8 +54,22 @@ app.post('/webhook', function (req, res) {
  // console.log('* Received action -- %s', req.body.result.action)
 
   // parameters are stored in req.body.result.parameters
-  var userName = req.body.result.parameters['company']
-  var webhookReply = 'Hello ' + userName + '! Welcome from the cheebo.'
+  req_company = req.body.result.parameters['company']
+  req_content = req.body.result.parameters['Content']
+
+  req_company = encodeURI(req_company); 
+  url = url1 + req_company + url2;
+
+  request(url, function(error, response, html){
+    var $ = cheerio.load(html);
+    var notice_url_s = "http://www.saramin.co.kr";
+    notice_url_s  += $('.j_tit > b > a','.jcard') .attr('href');
+    // res.send(JSON.stringify(notice_url_s))
+});
+
+
+//  var webhookReply = 'Hello ' + userName + '! Welcome from the heroku.'
+  var webhookReply = notice_url_s;
 
   // the most basic response
   res.status(200).json({
