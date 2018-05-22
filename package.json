@@ -1,0 +1,32 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "description": "a sample webhook (with authentication) for api.ai",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/supermamon/apiai-nodejs-webhook-sample.git"
+  },
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "apiai",
+    "webhook"
+  ],
+  "author": "Raymond Velasquez <at.supermamon@gmail.com> (https://supermamon.com)",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3"
+  },
+  "engines": {
+    "node": "^8.11.1",
+    "npm": "^5.6.0"
+  },
+  "bugs": {
+    "url": "https://github.com/supermamon/apiai-nodejs-webhook-sample/issues"
+  },
+  "homepage": "https://github.com/supermamon/apiai-nodejs-webhook-sample#readme",
+  "devDependencies": {}
+}
