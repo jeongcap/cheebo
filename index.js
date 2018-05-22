@@ -33,7 +33,7 @@ app.get('/webhook', function (req, res) {
 })
 function get_url(req_company, req_content){
     url = url1 + req_company + url2;
-
+  return url;
     request(url, function(error, response, html){
       var $ = cheerio.load(html);
       //기업 팝업 링크 찾아서 popup_link에 저장      
@@ -41,7 +41,7 @@ function get_url(req_company, req_content){
       var temp = popup_link_info.split("'");
       popup_link += temp[1];
     // console.log(popup_link);
-      return popup_link;
+    //  return popup_link;
       // res.send(JSON.stringify(notice_url_s))
   });
 }
