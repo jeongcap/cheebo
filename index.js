@@ -10,7 +10,7 @@ app.set('port', (process.env.PORT || 5000))
 
 
 var popup_link = "http://www.saramin.co.kr";
-var notice_url_s = "http://www.saramin.co.kr";
+var notice_url_s;
 var notice_url;
 
 var res_content;
@@ -62,7 +62,7 @@ app.post('/webhook', function (req, res) {
 
   request(url, function(error, response, html){
     var $ = cheerio.load(html);
-    var notice_url_s = "http://www.saramin.co.kr";
+    notice_url_s = "http://www.saramin.co.kr";
     notice_url_s  += $('.j_tit > b > a','.jcard') .attr('href');
     // res.send(JSON.stringify(notice_url_s))
 });
