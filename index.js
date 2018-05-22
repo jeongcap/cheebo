@@ -62,14 +62,18 @@ app.post('/webhook', function (req, res) {
 
   request(url, function(error, response, html){
     var $ = cheerio.load(html);
-    notice_url_s = "http://www.saramin.co.kr";
-    notice_url_s  += $('.j_tit > b > a','.jcard') .attr('href');
+    //기업 팝업 링크 찾아서 popup_link에 저장      
+    var popup_link_info = $('.company_tit > .tit ').first().find('a').attr('href');
+    var temp = popup_link_info.split("'");
+    popup_link += temp[1];
+   // console.log(popup_link);
+    
     // res.send(JSON.stringify(notice_url_s))
 });
 
 
 //  var webhookReply = 'Hello ' + userName + '! Welcome from the heroku.'
-  var webhookReply = notice_url_s;
+  var webhookReply = popup_link;
 
   // the most basic response
   res.status(200).json({
