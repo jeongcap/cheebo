@@ -13,14 +13,14 @@ var notice_url_s;
 var notice_url;
 
 var res_content;
-var req_company = '농심';
-var req_content = 'FAX';
+var req_company;
+var req_content;
 
 var url1 = 'http://www.saramin.co.kr/zf_user/search/company?searchword=';
 var url2 = '&searchType=auto&go=';
 var url;
 
-get_inform(req_company,req_content);
+
 
 app.get('/', function (req, res) {
   //  res.send('Use the /webhook endpoint.')
@@ -92,10 +92,9 @@ app.post('/webhook', function (req, res) {
   // parameters are stored in req.body.result.parameters
   req_company = req.body.result.parameters['company']
   req_content = req.body.result.parameters['Content']
-
+  get_inform(req_company,req_content);
   
   
-//var uuuuu = get_url(req_company,req_content);
 
 //  var webhookReply = 'Hello ' + userName + '! Welcome from the heroku.'
   var webhookReply = res_content;
