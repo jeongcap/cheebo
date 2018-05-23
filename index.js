@@ -60,9 +60,12 @@ function get_inform(req_company, req_content){
               arr[i] = b[i].trim();                    
           }            
           arr = arr.filter(n => n);
+
+          console.log(arr[0]+arr[1]+'   내용 배열');
           
           //주어진 req_content 값 찾기
           var ind = arr.indexOf(req_content) ;
+          console.log(ind + '   index');
           res_content = (ind >= 0)? arr[ind + 1] : '없습니다';
           console.log(res_content + '   내용 찾음');
                 
