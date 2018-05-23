@@ -91,7 +91,7 @@ app.post('/webhook', function (req, res) {
 
   // parameters are stored in req.body.result.parameters
   req_company = req.body.result.parameters['company']
-  req_content = req.body.result.parameters['Content']
+  req_content = req.body.result.parameters['Contents']
   get_inform(req_company,req_content);
   
   
