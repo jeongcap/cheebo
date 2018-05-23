@@ -8,7 +8,7 @@ app.use(bodyParser.json())
 app.set('port', (process.env.PORT || 5000))
 
 
-var popup_link = "http://www.saramin.co.kr";
+var popup_link;
 var notice_url_s;
 var notice_url;
 
@@ -16,8 +16,8 @@ var res_content;
 var req_company;
 var req_content;
 
-var url1 = 'http://www.saramin.co.kr/zf_user/search/company?searchword=';
-var url2 = '&searchType=auto&go=';
+var url1;
+var url2;
 var url;
 
 
@@ -30,6 +30,10 @@ app.get('/', function (req, res) {
 })
 
 function get_inform(req_company, req_content){
+  popup_link = "http://www.saramin.co.kr";
+  url1 = 'http://www.saramin.co.kr/zf_user/search/company?searchword=';
+  url2 = '&searchType=auto&go=';
+
   req_company = encodeURI(req_company); 
   url = url1 + req_company + url2;
   console.log('검색 url 완성');
