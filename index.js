@@ -102,7 +102,7 @@ app.post('/webhook', function (req, res) {
   // the most basic response
   res.status(200).json({
     source: 'webhook',
-    speech: webhookReply,
+    speech: popup_link,
     displayText: webhookReply
   })
 })
