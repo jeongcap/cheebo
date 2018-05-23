@@ -62,7 +62,7 @@ function get_inform(req_company, req_content){
           
           //주어진 req_content 값 찾기
           var ind = arr.indexOf(req_content) ;
-          res_content = ind != -1? arr[ind + 1] : '없습니다';
+          res_content = (ind >= 0)? arr[ind + 1] : '없습니다';
           console.log(res_content + '   내용 찾음');
                 
         }
@@ -106,8 +106,8 @@ app.post('/webhook', function (req, res) {
   // the most basic response
   res.status(200).json({
     source: 'webhook',
-    speech: req_company +'    '+ req_content,
-    displayText: req_company +'    '+ req_content
+    speech: res_content,
+    displayText: res_content
   })
 })
 
