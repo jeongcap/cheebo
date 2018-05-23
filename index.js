@@ -12,16 +12,16 @@ var popup_link;
 var notice_url_s;
 var notice_url;
 
-var res_content;
-var req_company;
-var req_content;
+var res_content ;
+var req_company = 'kt';
+var req_content = 'FAX';
 
 var url1;
 var url2;
 var url;
 
 
-
+get_inform(req_company, req_content)
 app.get('/', function (req, res) {
   //  res.send('Use the /webhook endpoint.')
   
@@ -81,31 +81,17 @@ app.post('/webhook', function (req, res) {
   // the payload is stored on req.body
   console.log(req.body)
   
-
-  // we have a simple authentication
- /* if (REQUIRE_AUTH) {
-    if (req.headers['auth-token'] !== AUTH_TOKEN) {
-      return res.status(401).send('Unauthorized')
-    }
-  }*/
-
   // and some validation too
   if (!req.body.result) {
     return res.status(400).send('bad~!~!')
   }
 
-  // the value of Action from api.ai is stored in req.body.result.action
- // console.log('* Received action -- %s', req.body.result.action)
-
   // parameters are stored in req.body.result.parameters
   req_company = req.body.result.parameters['company'];
-  req_content = req.body.result.parameters['Contents'];
+  req_content = req.body.result.parameters['Contents'][0];
+
   get_inform(req_company,req_content);
   
-  
-
-//  var webhookReply = 'Hello ' + userName + '! Welcome from the heroku.'
-  var webhookReply = res_content;
 
   // the most basic response
   res.status(200).json({
