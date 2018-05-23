@@ -24,13 +24,13 @@ var url;
 
 app.get('/', function (req, res) {
   //  res.send('Use the /webhook endpoint.')
-    
-    console.log(popup_link + req_company);
-    res.send(res_content);
+  
+  res.send(res_content);
 })
 
 function get_inform(req_company, req_content){
   popup_link = "http://www.saramin.co.kr";
+  notice_url = notice_url_s = res_content = '';
   url1 = 'http://www.saramin.co.kr/zf_user/search/company?searchword=';
   url2 = '&searchType=auto&go=';
 
@@ -59,7 +59,7 @@ function get_inform(req_company, req_content){
               arr[i] = b[i].trim();                    
           }            
           arr = arr.filter(n => n);
-         
+          
           //주어진 req_content 값 찾기
           var ind = arr.indexOf(req_content) ;
           res_content = ind != -1? arr[ind + 1] : '없습니다';
@@ -94,8 +94,8 @@ app.post('/webhook', function (req, res) {
  // console.log('* Received action -- %s', req.body.result.action)
 
   // parameters are stored in req.body.result.parameters
-  req_company = req.body.result.parameters['company']
-  req_content = req.body.result.parameters['Contents']
+  req_company = req.body.result.parameters['company'];
+  req_content = req.body.result.parameters['Contents'];
   get_inform(req_company,req_content);
   
   
