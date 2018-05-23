@@ -37,9 +37,10 @@ function get_inform(req_company, req_content){
   req_company = encodeURI(req_company); 
   url = url1 + req_company + url2;
   console.log('검색 url 완성');
+  
 
   request(url,function(error, response, html){
-  
+    console.log(req_company, req_content);
     var $ = cheerio.load(html);
     var popup_link_info = $('.company_tit > .tit ').first().find('a').attr('href');
     var temp = popup_link_info.split("'");
