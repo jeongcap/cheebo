@@ -151,7 +151,7 @@ app.post('/webhook', function (req, res) {
   });
 
 var async2 = new Promise(function(resolve, reject){
-  if(param)
+  if(status)
     resolve(
       request(popup_link, function (error, response, html) {
         if (!error) {
@@ -180,7 +180,7 @@ var async2 = new Promise(function(resolve, reject){
     );
   });
 
-  async1(status).then(async2, fail);
+  async1.then(async2, fail);
 
   Promise.all([async1, async2]).then(function(res_content){
     console.log('promise.then 들어옴');
