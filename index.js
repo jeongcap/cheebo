@@ -74,38 +74,9 @@ function get_inform(req_company, req_content){
   });  
 }
 
-function async2 (param){
-  return new Promise(function(resolve, reject){
-    if(param)
-      resolve(
-        request(popup_link, function (error, response, html) {
-          if (!error) {
-              var $1 = cheerio.load(html);
-              var arr = [];              
-              var b = $1('tbody', '.table_col_type1').text();
-              b = b.split('\n');
-              b.shift();
-              b.shift();                
-    
-              for (var i=0;i <b.length;i++){
-                  arr[i] = b[i].trim();                    
-              }            
-              arr = arr.filter(n => n);
-    
-              console.log(arr[0]+arr[1]+'   내용 배열');
-              
-              //주어진 req_content 값 찾기
-              var ind = arr.indexOf(req_content) ;
-              console.log(ind + '   index');
-              res_content = (ind >= 0)? arr[ind + 1] : '없습니다';
-              console.log(res_content + '   내용 찾음');
-                    
-            }
-          })
-      );
-    });
-  }
-
+function fail(){
+  console.log("호출실패");
+}
 
 
 app.post('/webhook', function (req, res) {
@@ -177,15 +148,47 @@ app.post('/webhook', function (req, res) {
           console.log(popup_link+'    팝업링크 완성');
         })
       );
-  }).then(async2, status)
+  });
 
-  Promise.all([async1, async2]).then(function(result){
+var async2 = new Promise(function(resolve, reject){
+  if(param)
+    resolve(
+      request(popup_link, function (error, response, html) {
+        if (!error) {
+            var $1 = cheerio.load(html);
+            var arr = [];              
+            var b = $1('tbody', '.table_col_type1').text();
+            b = b.split('\n');
+            b.shift();
+            b.shift();                
+  
+            for (var i=0;i <b.length;i++){
+                arr[i] = b[i].trim();                    
+            }            
+            arr = arr.filter(n => n);
+  
+            console.log(arr[0]+arr[1]+'   내용 배열');
+            
+            //주어진 req_content 값 찾기
+            var ind = arr.indexOf(req_content) ;
+            console.log(ind + '   index');
+            res_content = (ind >= 0)? arr[ind + 1] : '없습니다';
+            console.log(res_content + '   내용 찾음');
+                  
+          }
+        })
+    );
+  });
+
+  async1(status).then(async2, fail);
+
+  Promise.all([async1, async2]).then(function(res_content){
     console.log('promise.then 들어옴');
-    console.log(result);
+    console.log(res_content);
     res.status(200).json({
       source: 'webhook',
-      speech: result,
-      displayText: result
+      speech: res_content,
+      displayText: res_content
     })
   }, function(err){
     res.status(400).send(err)
