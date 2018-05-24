@@ -133,6 +133,7 @@ app.post('/webhook', function (req, res) {
   });
   promise.then(function(result){
     console.log('promise.then 들어옴');
+    console.log(result);
     res.status(200).json({
       source: 'webhook',
       speech: result,
