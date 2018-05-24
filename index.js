@@ -74,21 +74,6 @@ function get_inform(req_company, req_content){
   });  
 }
 
-function async1 (param){
-  return new Promise(function(resolve, reject){
-    if(param)
-      resolve(
-        request(url,function(error, response, html){
-          console.log(req_company, req_content);
-          var $ = cheerio.load(html);
-          var popup_link_info = $('.company_tit > .tit ').first().find('a').attr('href');
-          var temp = popup_link_info.split("'");
-          popup_link += temp[1];
-          console.log(popup_link+'    팝업링크 완성');
-        })
-      );
-  });
-}
 function async2 (param){
   return new Promise(function(resolve, reject){
     if(param)
@@ -120,17 +105,6 @@ function async2 (param){
       );
     });
   }
-
-  function async2 (param){
-    return new Promise(function(resolve, reject){
-      if(param)
-        resolve(
-          
-
-        )
-    })
-  }
-
 
 
 
@@ -191,9 +165,21 @@ app.post('/webhook', function (req, res) {
 
 
 
-  async1(start)
-  .then(async2, fail)
-  .then(function(result){
+  var async1 = new Promise(function(resolve, reject){
+    if(param)
+      resolve(
+        request(url,function(error, response, html){
+          console.log(req_company, req_content);
+          var $ = cheerio.load(html);
+          var popup_link_info = $('.company_tit > .tit ').first().find('a').attr('href');
+          var temp = popup_link_info.split("'");
+          popup_link += temp[1];
+          console.log(popup_link+'    팝업링크 완성');
+        })
+      );
+  }).then(async2, fail)
+
+  Promise.all([async1, async2]).then(function(result){
     console.log('promise.then 들어옴');
     console.log(result);
     res.status(200).json({
