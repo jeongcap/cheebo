@@ -124,7 +124,7 @@ app.post('/webhook', function (req, res) {
 
   promise = new Promise(function(resolve, reject){
     if(status){
-      resolve(get_inform(req.req_company,req.req_content));
+      resolve(get_inform(req_company,req_content));
     }
     else{
       reject('promise error');
