@@ -79,7 +79,8 @@ app.post('/webhook', function (req, res) {
   // we expect to receive JSON data from api.ai here.
   // the payload is stored on req.body
   console.log(req.body)
-  
+  var status = 1;
+  var promise;
   // and some validation too
   if (!req.body.result) {
     return res.status(400).send('bad~!~!')
@@ -89,12 +90,12 @@ app.post('/webhook', function (req, res) {
   req_company = req.body.result.parameters['company'];
   req_content = req.body.result.parameters['Contents'][0];
 
-  new Promise(function(resolve, reject) {
+  /*new Promise(function(resolve, reject) {
     // 프라미스 걸어보고
     // request promise npm module
     get_inform(req_company,req_content);
-
     resolve();
+    //resolve('resolved');
   })
   .then(function(data) {
     res.status(200).json({
@@ -108,7 +109,36 @@ app.post('/webhook', function (req, res) {
       error: err
     });
   })
+*/
 
+ /* function async (status){
+    return new Promise(function(resolve, reject){
+      if(status){
+        resolve(get_inform(req_company,req_content));
+      }
+      else{
+        reject(res.status(400).send('bad~!~!'));
+      }
+    });
+  }*/
+
+  promise = new Promise(function(resolve, reject){
+    if(status){
+      resolve(get_inform(req.req_company,req.req_content));
+    }
+    else{
+      reject('promise error');
+    }
+  });
+  promise.then(function(result){
+    res.status(200).json({
+      source: 'webhook',
+      speech: result,
+      displayText: result
+    })
+  }, function(err){
+    res.status(400).send(err)
+  });
   // the most basic response
   
 })
