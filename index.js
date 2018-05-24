@@ -74,6 +74,65 @@ function get_inform(req_company, req_content){
   });  
 }
 
+function async1 (param){
+  return new Promise(function(resolve, reject){
+    if(param)
+      resolve(
+        request(url,function(error, response, html){
+          console.log(req_company, req_content);
+          var $ = cheerio.load(html);
+          var popup_link_info = $('.company_tit > .tit ').first().find('a').attr('href');
+          var temp = popup_link_info.split("'");
+          popup_link += temp[1];
+          console.log(popup_link+'    팝업링크 완성');
+        })
+      );
+  });
+}
+function async2 (param){
+  return new Promise(function(resolve, reject){
+    if(param)
+      resolve(
+        request(popup_link, function (error, response, html) {
+          if (!error) {
+              var $1 = cheerio.load(html);
+              var arr = [];              
+              var b = $1('tbody', '.table_col_type1').text();
+              b = b.split('\n');
+              b.shift();
+              b.shift();                
+    
+              for (var i=0;i <b.length;i++){
+                  arr[i] = b[i].trim();                    
+              }            
+              arr = arr.filter(n => n);
+    
+              console.log(arr[0]+arr[1]+'   내용 배열');
+              
+              //주어진 req_content 값 찾기
+              var ind = arr.indexOf(req_content) ;
+              console.log(ind + '   index');
+              res_content = (ind >= 0)? arr[ind + 1] : '없습니다';
+              console.log(res_content + '   내용 찾음');
+                    
+            }
+          })
+      );
+    });
+  }
+
+  function async2 (param){
+    return new Promise(function(resolve, reject){
+      if(param)
+        resolve(
+          
+
+        )
+    })
+  }
+
+
+
 
 app.post('/webhook', function (req, res) {
   // we expect to receive JSON data from api.ai here.
@@ -121,17 +180,20 @@ app.post('/webhook', function (req, res) {
       }
     });
   }*/
+  popup_link = "http://www.saramin.co.kr";
+  notice_url = notice_url_s = res_content = '';
+  url1 = 'http://www.saramin.co.kr/zf_user/search/company?searchword=';
+  url2 = '&searchType=auto&go=';
 
-  promise = new Promise(function(resolve, reject){
-    if(status){
-      console.log('if status 들어옴');
-      resolve(get_inform(req_company,req_content));
-    }
-    else{
-      reject('promise error');
-    }
-  });
-  promise.then(function(result){
+  req_company = encodeURI(req_company); 
+  url = url1 + req_company + url2;
+  console.log('검색 url 완성');
+
+
+
+  async1(start)
+  .then(async2, fail)
+  .then(function(result){
     console.log('promise.then 들어옴');
     console.log(result);
     res.status(200).json({
