@@ -166,7 +166,7 @@ app.post('/webhook', function (req, res) {
 
 
   var async1 = new Promise(function(resolve, reject){
-    if(param)
+    if(status)
       resolve(
         request(url,function(error, response, html){
           console.log(req_company, req_content);
@@ -177,7 +177,7 @@ app.post('/webhook', function (req, res) {
           console.log(popup_link+'    팝업링크 완성');
         })
       );
-  }).then(async2, fail)
+  }).then(async2, status)
 
   Promise.all([async1, async2]).then(function(result){
     console.log('promise.then 들어옴');
