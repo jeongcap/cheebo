@@ -23,7 +23,7 @@ var url;
 
 app.get('/', function (req, res) {
   //  res.send('Use the /webhook endpoint.')
-  
+  //get_inform(req_company,req_content);
   res.send(res_content);
 })
 
@@ -124,6 +124,7 @@ app.post('/webhook', function (req, res) {
 
   promise = new Promise(function(resolve, reject){
     if(status){
+      console.log('if status 들어옴');
       resolve(get_inform(req_company,req_content));
     }
     else{
@@ -131,6 +132,7 @@ app.post('/webhook', function (req, res) {
     }
   });
   promise.then(function(result){
+    console.log('promise.then 들어옴');
     res.status(200).json({
       source: 'webhook',
       speech: result,
