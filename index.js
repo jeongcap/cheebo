@@ -21,7 +21,6 @@ var url2;
 var url;
 
 
-get_inform(req_company, req_content)
 app.get('/', function (req, res) {
   //  res.send('Use the /webhook endpoint.')
   
@@ -90,15 +89,28 @@ app.post('/webhook', function (req, res) {
   req_company = req.body.result.parameters['company'];
   req_content = req.body.result.parameters['Contents'][0];
 
-  get_inform(req_company,req_content);
-  
+  new Promise(function(resolve, reject) {
+    // 프라미스 걸어보고
+    // request promise npm module
+    get_inform(req_company,req_content);
+
+    resolve();
+  })
+  .then(function(data) {
+    res.status(200).json({
+      source: 'webhook',
+      speech: res_content,
+      displayText: res_content
+    })
+  })
+  .catch(function(err) {
+    res.status(404).json({
+      error: err
+    });
+  })
 
   // the most basic response
-  res.status(200).json({
-    source: 'webhook',
-    speech: res_content,
-    displayText: res_content
-  })
+  
 })
 
 app.listen(app.get('port'), function () {
